@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Point Of Sale</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="container-2" id="current">
+    <div class="current-order">
+      <h1>Current Order</h1>
+      <div class="order" id="order">
+      </div>
+      <div class="total">
+        <div class="bawah-1">
+          <h2>Total:</h2>
+          <h1 id="total"></h1>
+        </div>
+      </div>
+      <button id="myBtn">Lanjutkan Pembayaran</button>
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h1>Pembayaran</h1>
+      <div class="input-1">
+        <input type="text" placeholder="Masukan Uang" id="input">
+      </div>
+      <hr>
+      <div class="total-2">
+        <p>Total Pembayaran</p>
+        <p id="totalAkhir">Rp</p>
+      </div>
+      <hr>
+      <div class="total-2">
+        <p>kembalian</p>
+        <p id="kembalian">Rp</p>
+      </div>
+      <hr>
+      <div class="btn-copy">
+        <button onclick="input()">Print Pembayaran</button>
+      </div>
+      </div>
+  </div>
+    </div>
+  </div>
+  <div class="container">
+    <d  iv class="garry">
+      <div class="text">
+        <h1>Welcome, Gorry</h1>
+        <p>Discover Whatever You Need Easily</p>
+      </div>
+      <div class="input">
+        <input type="text" name="search" id="search" placeholder="Search product..." />
+        <i class="ri-search-line"></i>
+      </div>
+    </d>
+    <div class="sidebar">
+      <a href="">Mewing</a>
+      <a href="">Mewing</a>
+      <a href="">Mewing</a>
+      <a href="">Mewing</a>
+      <a href="">Mewing</a>
+    </div>
+    <div class="cards" id="formCard"></div>
+  </div>
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const URL = "./form.json";
+      const formCard = document.getElementById("formCard");
+      fetch(URL)
+        .then((response) => response.json())
+        .then((data) => {
+          const products = data.products;
+          saveProductsToLocalStorage(products);
+          formCard.innerHTML = getProducts(products);
+        });
+      const getProducts = (products) => {
+        return products
+          .map(
+            (product) => `<div class="card" id="card" key="${product.id}">
+                <button id="button" class="button" onclick="addToOrder(${product.id})">
+                <div class="gambar">
+              <img src="${product.img}" alt="" id="picture" />
+            </div>
+            <h2 id="title">${product.title}</h2>
+            <p id="para">
+              ${product.descripsi}
+            <h2 id="price">Rp ${product.price}</h2>
+              </button>
+            </div>`
+          )
+          .join("");
+      };
+      const carts = getCartFromLocalStorage()
+      updatedOrder(carts)
+    });
+
+    function addToOrder(id) {
+      const products = getProductsFromLocalStorage();
+      const carts = getCartFromLocalStorage();
+      const selectedProduct = products.find(
+        (product) => product.id === id
+      );  
+      const product = carts.find((product) => product.id == id);
+      const existingProduk = carts.some(
+        (product) => product.id === id
+      )
+      if (existingProduk) {
+        alert("Produk sudah ada di keranjang")
+      } else {
+        carts.push({
+          id: id,
+          title: selectedProduct.title,
+          price: selectedProduct.price,
+          img: selectedProduct.img,
+          counter: 1
+        });
+      }
+      total(carts)
+      saveCartToLocalStorage(carts)
+      updatedOrder(carts)
+
+    }
+    function plus(id) {
+      const carts = getCartFromLocalStorage()
+      const product = carts.find((product) => product.id === id)
+      if (product) {
+        product.counter += 1
+        total(carts)
+        saveCartToLocalStorage(carts)
+        updatedOrder(carts)
+      }
+    }
+    function minus(id) {
+      const carts = getCartFromLocalStorage()
+      const product = carts.find((product) => product.id === id)
+      if (product && product.counter > 0) {
+        product.counter--
+        if (product.counter === 0) {
+          const index = carts.indexOf(product)
+          carts.splice(index, 1)
+        }
+        total(carts)
+        saveCartToLocalStorage(carts)
+        updatedOrder(carts)
+      }
+    }
+    // function total akhir
+    function total(carts) {
+      const total = carts.reduce((acc, product) => acc + product.price * product.counter, 0);
+      document.getElementById("total").innerHTML = `Rp ${total}`;
+      console.log(total);
+    }
+    // untuk tidak merelod 
+    function updatedOrder(orde) {
+      const order = document.getElementById("order");
+      order.innerHTML = orde.map(
+        (product) => `<div class="card-1" id="card" key="${product.id}">  
+           <div class="bawah">          
+                <div class="gambar-1">       
+              <img src="${product.img}" alt="" id="picture" />   
+             </div>
+             <div class="wrap-1">
+                <div class="strong-2">
+                 <h3 id="title-1">${product.title}</h3>
+               </div>
+              <div class="strong-1">
+               <p id="price-1">Rp ${product.price}</p> 
+               </div></div>
+                <div class="order" id="order">
+               <div class="button">
+               <button id="minus" onclick="minus(${product.id})">-</button>
+             <div id="value">${product.counter}</div>
+             <button id="plus" onclick="plus(${product.id})">+</button></div>
+           </div>
+           </div>`
+      )
+        .join("\n");
+      const carts = getCartFromLocalStorage()
+      total(carts)
+    }
+    
+    const modal = document.getElementById("myModal");
+
+    const btn = document.getElementById("myBtn");
+
+    const span = document.getElementsByClassName("close")[0];
+    btn.onclick = function () {
+      modal.style.display = "block";
+      
+    }
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+      totalAkhir()
+    }
+    function totalAkhir(){
+     const getTotal = document.getElementById("totalAkhir")
+     const getHasil = document.getElementById("total").textContent;
+     getTotal.textContent = getHasil
+    }
+    function input() {
+      const getInput =  parseFloat(document.getElementById("input").value)
+      const getTotal = parseFloat(document.getElementById("totalAkhir").textContent.replace("Rp",""))
+      const getKembalian = document.getElementById("kembalian")
+      const totalAkhirBanget = getInput - getTotal
+      if(getInput < getTotal) {
+        alert(`uangnya kurang Rp ${totalAkhirBanget}`)
+      } else {
+        getKembalian.textContent = `Rp ${totalAkhirBanget}`
+      }
+      console.log(totalAkhirBanget)
+    }
+    
+    // fungsi untuk mendapatkan produk
+    function getProductsFromLocalStorage() {
+      const cards = localStorage.getItem("products");
+      return cards ? JSON.parse(cards) : [];
+    }
+
+    // fungsi untuk menyimpan produk dari fetching data
+    function saveProductsToLocalStorage(arg) {
+      localStorage.setItem("products", JSON.stringify(arg));
+    }
+
+    // fungsi untuk mendapatkan produk yang ada di dalam keranjang
+    function getCartFromLocalStorage() {
+      const order = localStorage.getItem("cart");
+      return order ? JSON.parse(order) : [];
+    }
+
+    // fungsi untuk menyimpan data produk ke dalam keranjang belanja
+    function saveCartToLocalStorage(arg) {
+      localStorage.setItem("cart", JSON.stringify(arg));
+    }
+  </script>
+</body>
+
+</html>

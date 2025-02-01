@@ -1,0 +1,316 @@
+body {
+ 
+    margin: 0;
+    padding: 0;
+    overflow: hidden; 
+  }
+  .container,
+  .container-2 {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .container {
+    width: 65%;
+    background-color:rgb(219, 219, 219);
+    top: 0;
+    left: 0;
+  }
+  .container-2 {
+    width: 35%;
+    background-color: #f5f5f5;
+    padding: 20px;
+    position: fixed;
+    display: flex;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+  .garry {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+  .input {
+    display: flex;
+    align-items: center;
+  }
+  .input i {
+    margin-right: 10px;
+    position: absolute;
+    padding-left: 3px;
+  }
+  .input input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding-left: 20px;
+  }
+  .sidebar {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    justify-content: center;
+  }
+  .sidebar a {
+    background-color: orange;
+    text-decoration: none;
+    padding: 8px 30px;
+    border-radius: 4px;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  .sidebar a:hover {
+    background-color: white;
+    color: black;
+  }
+  img {
+    width: 100%;
+  }
+  .card {
+    display: flex;
+    flex-direction: row;
+    width: 30%; 
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+  }
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px;
+    overflow-y: scroll;
+    max-height:430px;
+    padding: 10px;
+  }
+  .current-order {
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f5f5;
+    text-align: center;
+  }
+  .container-2 {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    padding-bottom: 20px;
+  }
+  .curent-order {
+    display: flex;  
+    flex-direction: column;
+  }
+  .bawah {
+    padding: 20px;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    background-color: #ccc;
+    margin: 10px;
+    justify-content: space-between;
+  }
+  strong {
+    display: flex;
+    flex-direction: column;
+  }
+  .card-1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .order {
+    text-align: center;
+    overflow-y: auto;
+    flex-direction: row;
+    padding: 20px;
+    padding-right: 30px;
+    max-height: 350px;
+    margin-bottom: 20px;
+  
+  }
+  button #minus {
+    display: flex;
+    flex-direction: row;
+    background-color: #ccc;
+    padding: 4px;
+  }
+  #value {
+    padding: 4px;
+  }
+  button #plus {
+    display: flex;
+    background-color: #f5f5f5;
+    padding: 4px;
+  }
+  .order .button {
+    display: flex;
+    margin-left: 10px;
+    justify-content: center;
+  }
+  .gambar-1 {
+    display: flex;
+    width: 100%;
+  }
+  #title-1 {
+    display: flex;
+    padding-left: 10px;
+    width: 120px;
+  }
+  #price-1 {
+    width: 100px;
+  }
+  .strong-1 {
+    display: flex;
+    justify-content: space-between;
+  }
+  .wrap-1 {
+    display: flex;
+    flex-direction: column;
+    margin-right: 60px;
+    margin-left: 30px;
+  }
+  .gambar-1 img {
+    width: 150%;
+  }
+  .bawah-1 {
+    padding-left: 30px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 80%;
+  }
+  .total {
+    display: flex;
+    background-color: rgb(207, 196, 196);
+    padding: 20px;
+  }
+  .btn-order button{
+    padding: 10px;
+    background-color: #ccc;
+    display: flex;
+    justify-content: center;
+  }
+  .btn-order {
+    text-align: center;
+    padding: 20px;
+    background-color:orange;
+    border: none;
+    border-radius: 4px;
+  }
+  .curent-order button {
+    padding: 10px;
+  }
+  #button {
+    padding: 10px;
+    background-color:rgb(255, 255, 255);
+    border: none;
+  }
+  #button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .button:hover {
+    /* background-color: #3e8e41; */
+  }
+  
+  .button:active {
+    /* background-color: #2ecc71; */
+    transform: scale(0.9);
+    transition: transform 0.1s ease-in-out;
+  }
+  
+  .button:focus {
+    /* outline: none; */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease-in-out;
+  }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: rgb(0, 0, 0);
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+  
+  
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+   
+    }
+  
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+  
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    #myBtn {
+      background-color: orange;
+      border: none;
+      padding: 10px 20px;
+    }
+    #myBtn:hover {
+      background-color: gray;
+    }
+    .total-2 {
+      display: flex;
+      gap: 10px;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .input-1 {
+      /* padding: 10px; */
+      display: flex;
+      flex-direction:row;
+      width: 20%;
+      justify-content: space-around;
+    }
+    input {
+      padding: 10px;
+    }
+   .btn-copy button{
+    padding: 10px;
+    background-color: orange;
+    border: none;
+    border-radius: 4px;
+   
+   }
+   .btn-copy {
+    display: flex;
+    justify-content: end;
+   }
+   .btn-copy  button:hover {
+    background-color: red;
+   }
