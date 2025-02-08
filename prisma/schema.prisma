@@ -18,14 +18,14 @@ model Product {
   id    String  @id @default(uuid())
   title String
   price Int
-  orders OrderProduct[]
 }
 
 model OrderProduct {
   id        String   @id @default(uuid())
   orderId   String
   productId String
+  title String
+  price Int
   quantity  Int
   order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }

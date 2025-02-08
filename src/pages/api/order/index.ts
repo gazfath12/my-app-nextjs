@@ -6,7 +6,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === 'GET') {
       // Ambil semua order beserta produk yang terkait
       const orders = await prisma.order.findMany({
-        include: { products: { include: { product: true } } },
         orderBy: { createdAt: 'desc' },
       });
       return res.status(200).json(orders);
@@ -20,17 +19,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ error: 'Invalid request body' });
       }
 
-      // Pastikan semua productId ada di database
-      const productIds = products.map(p => p.productId);
-      console.log("apakah id ada",productIds)
-      const existingProducts = await prisma.product.findMany({
-        where: { id: { in: productIds } },
-      });
-      console.log("product sudah ada belum",existingProducts)
-
-      if (existingProducts.length !== productIds.length) {
-        return res.status(400).json({ error: 'Some products do not exist' });
-      }
+      // // Pastikan semua productId ada di database
+      // const productIds = products.map(p => p.productId);
+      // console.log("apakah id ada",productIds)
+      // const existingProducts = await prisma.product.findMany({
+      //   where: { id: { in: productIds } },
+      // });
+      // if (existingProducts.length !== productIds.length) {
+      //   return res.status(400).json({ error: 'Some products do not exist' });
+      // }
 
       // Hitung total harga berdasarkan produk yang dipesan
       const totalPrice = products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
@@ -41,12 +38,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           total: totalPrice,
           products: {
             create: products.map((p) => ({
-              product: { connect: { id: p.productId } },
+              productId:p.productId,
+              title:p.title,
+              price:p.price,
               quantity: p.quantity,
             })),
           },
         },
-        include: { products: { include: { product: true } } },
       });
 
       return res.status(201).json(newOrder);

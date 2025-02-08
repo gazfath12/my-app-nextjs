@@ -21,7 +21,7 @@
           <h1 id="total"></h1>
         </div>
       </div>
-      <button id="myBtn" onclick="placeOrder()">Lanjutkan Pembayaran</button>
+      <button id="myBtn" onclick="placeOrder()">Order Product</button>
       <div id="myModal" class="modal">
         <div class="modal-content">
           <span class="close">&times;</span>
@@ -69,7 +69,8 @@
   </div>
 
   <script>
-
+let lastTotal = 0;
+let listItem;
     document.addEventListener("DOMContentLoaded", () => {
       const URL = "./form.json";
       const formCard = document.getElementById("formCard");
@@ -154,11 +155,13 @@
     // function total akhir
     function total(carts) {
       const total = carts.reduce((acc, product) => acc + product.price * product.counter, 0);
+      lastTotal = total;
       document.getElementById("total").innerHTML = `Rp ${total}`;
       console.log(total);
     }
     // untuk tidak merelod 
     function updatedOrder(orde) {
+      listItem = orde;
       const order = document.getElementById("order");
       order.innerHTML = orde.map(
         (product) => `<div class="card-1" id="card" key="${product.id}">  
@@ -193,21 +196,40 @@
     const span = document.getElementsByClassName("close")[0];
     btn.onclick = function () {
       modal.style.display = "block";
+
+      console.log("lastTotal ",lastTotal);
+      console.log('list item',listItem)
+
+      const products = listItem.map((item)=>{
+        return {
+         "productId": item.id +"",
+            "title": item.title,
+            "price": parseInt(item.price),
+            "quantity": item.counter 
+        }
+      })
+      
       // Create order
-      async function placeOrder() {
-        const selectedProducts = [
-          
-        ];
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
 
-        const response = await fetch('/api/order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ products: selectedProducts }),
-        });
+      const raw = JSON.stringify({
+        "total": lastTotal,
+        "products": products
+      });
 
-        const data = await response.json();
-        alert('Order Created:', data);
-      }
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+      };
+
+      fetch("http://localhost:3000/api/order", requestOptions)
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        .catch((error) => console.error(error));
+        console.log(typeof myHeaders)
 
     }
     span.onclick = function () {
