@@ -7,41 +7,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Customer {
-  id        Int        @id @default(autoincrement())
-  name      String
-  email     String     @unique
-  createdAt DateTime   @default(now())
-  phone     String
-  orders    Order[]
-  purchases Purchase[]
-}
-
-model Purchase {
-  id         Int      @id @default(autoincrement())
-  amount     Float
-  customerId Int
-  customer   Customer @relation(fields: [customerId], references: [id])
-}
-
 model Order {
-  id           String        @id @default(uuid())
-  customerId   Int?
-  Customer     Customer?     @relation(fields: [customerId], references: [id])
-  transactions Transaction[]
-}
-
-model Transaction {
-  id      String @id @default(uuid())
-  orderId String
-  order   Order  @relation(fields: [orderId], references: [id])
+  id        String   @id @default(uuid())
+  total     Int
+  products  OrderProduct[]
+  createdAt DateTime @default(now())
 }
 
 model Product {
+  id    String  @id @default(uuid())
+  title String
+  price Int
+  orders OrderProduct[]
+}
+
+model OrderProduct {
   id        String   @id @default(uuid())
-  price     Float
-  createdAt DateTime @default(now())
-  name      String
-  stock     Int
-  updatedAt DateTime @updatedAt
+  orderId   String
+  productId String
+  quantity  Int
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }

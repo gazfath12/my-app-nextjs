@@ -21,34 +21,34 @@
           <h1 id="total"></h1>
         </div>
       </div>
-      <button id="myBtn">Lanjutkan Pembayaran</button>
-  <div id="myModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h1>Pembayaran</h1>
-      <div class="input-1">
-        <input type="text" placeholder="Masukan Uang" id="input">
+      <button id="myBtn" onclick="placeOrder()">Lanjutkan Pembayaran</button>
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h1>Pembayaran</h1>
+          <div class="input-1">
+            <input type="text" placeholder="Masukan Uang" id="input">
+          </div>
+          <hr>
+          <div class="total-2">
+            <p>Total Pembayaran</p>
+            <p id="totalAkhir">Rp</p>
+          </div>
+          <hr>
+          <div class="total-2">
+            <p>kembalian</p>
+            <p id="kembalian">Rp</p>
+          </div>
+          <hr>
+          <div class="btn-copy">
+            <button onclick="input()">Hitung Pembayaran</button>
+          </div>
+        </div>
       </div>
-      <hr>
-      <div class="total-2">
-        <p>Total Pembayaran</p>
-        <p id="totalAkhir">Rp</p>
-      </div>
-      <hr>
-      <div class="total-2">
-        <p>kembalian</p>
-        <p id="kembalian">Rp</p>
-      </div>
-      <hr>
-      <div class="btn-copy">
-        <button onclick="input()">Print Pembayaran</button>
-      </div>
-      </div>
-  </div>
     </div>
   </div>
   <div class="container">
-    <d  iv class="garry">
+    <d iv class="garry">
       <div class="text">
         <h1>Welcome, Gorry</h1>
         <p>Discover Whatever You Need Easily</p>
@@ -106,7 +106,7 @@
       const carts = getCartFromLocalStorage();
       const selectedProduct = products.find(
         (product) => product.id === id
-      );  
+      );
       const product = carts.find((product) => product.id == id);
       const existingProduk = carts.some(
         (product) => product.id === id
@@ -185,7 +185,7 @@
       const carts = getCartFromLocalStorage()
       total(carts)
     }
-    
+
     const modal = document.getElementById("myModal");
 
     const btn = document.getElementById("myBtn");
@@ -193,7 +193,22 @@
     const span = document.getElementsByClassName("close")[0];
     btn.onclick = function () {
       modal.style.display = "block";
-      
+      // Create order
+      async function placeOrder() {
+        const selectedProducts = [
+          
+        ];
+
+        const response = await fetch('/api/order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ products: selectedProducts }),
+        });
+
+        const data = await response.json();
+        alert('Order Created:', data);
+      }
+
     }
     span.onclick = function () {
       modal.style.display = "none";
@@ -204,24 +219,24 @@
       }
       totalAkhir()
     }
-    function totalAkhir(){
-     const getTotal = document.getElementById("totalAkhir")
-     const getHasil = document.getElementById("total").textContent;
-     getTotal.textContent = getHasil
+    function totalAkhir() {
+      const getTotal = document.getElementById("totalAkhir")
+      const getHasil = document.getElementById("total").textContent;
+      getTotal.textContent = getHasil
     }
     function input() {
-      const getInput =  parseFloat(document.getElementById("input").value)
-      const getTotal = parseFloat(document.getElementById("totalAkhir").textContent.replace("Rp",""))
+      const getInput = parseFloat(document.getElementById("input").value)
+      const getTotal = parseFloat(document.getElementById("totalAkhir").textContent.replace("Rp", ""))
       const getKembalian = document.getElementById("kembalian")
       const totalAkhirBanget = getInput - getTotal
-      if(getInput < getTotal) {
+      if (getInput < getTotal) {
         alert(`uangnya kurang Rp ${totalAkhirBanget}`)
       } else {
         getKembalian.textContent = `Rp ${totalAkhirBanget}`
       }
       console.log(totalAkhirBanget)
     }
-    
+
     // fungsi untuk mendapatkan produk
     function getProductsFromLocalStorage() {
       const cards = localStorage.getItem("products");
@@ -244,6 +259,7 @@
       localStorage.setItem("cart", JSON.stringify(arg));
     }
   </script>
+
 </body>
 
 </html>
